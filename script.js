@@ -87,13 +87,36 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data: { text } } = await Tesseract.recognize(file, 'rus');
             return text;
         } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-            // Parse DOCX with Mammoth
+            // Parse DOCX with Mammoth for text
             const arrayBuffer = await file.arrayBuffer();
+            const zip = new PizZip(arrayBuffer);
             const result = await mammoth.extractRawText({ arrayBuffer });
-            return result.value;
+            let text = result.value;
+
+            // Extract images and OCR them
+            const imageTexts = await extractImagesAndOCR(zip);
+            if (imageTexts.length > 0) {
+                text += '\n\nТекст из изображений:\n' + imageTexts.join('\n');
+            }
+
+            return text;
         } else {
             throw new Error('Неподдерживаемый тип файла источника.');
         }
+    }
+
+    async function extractImagesAndOCR(zip) {
+        const imagePromises = [];
+        const mediaFolder = zip.folder('word/media');
+        if (mediaFolder) {
+            mediaFolder.forEach((relativePath, file) => {
+                if (relativePath.match(/\.(png|jpg|jpeg|gif|bmp)$/i)) {
+                    const imageBlob = new Blob([file.asArrayBuffer()], { type: 'image/' + relativePath.split('.').pop() });
+                    imagePromises.push(Tesseract.recognize(imageBlob, 'rus').then(({ data: { text } }) => text));
+                }
+            });
+        }
+        return await Promise.all(imagePromises);
     }
 
     function parseData(text) {
