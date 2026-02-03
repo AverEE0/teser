@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заполнение договора</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Веб-приложение для заполнения договора</h1>
+        <div class="upload-section">
+            <div class="file-input">
+                <label for="template">Шаблон договора (DOCX):</label>
+                <input type="file" id="template" accept=".docx">
+            </div>
+            <div class="file-input">
+                <label for="source">Источник данных (фото или DOCX):</label>
+                <input type="file" id="source" accept=".jpg,.jpeg,.png,.docx">
+            </div>
+        </div>
+        <button id="processBtn">Обработать и заполнить</button>
+        <div id="extractedData" class="hidden">
+            <h2>Извлеченные данные</h2>
+            <form id="dataForm">
+                <label for="fio">ФИО заказчика:</label>
+                <input type="text" id="fio" name="fio"><br>
+                <label for="property">Наименование имущества:</label>
+                <input type="text" id="property" name="property"><br>
+                <label for="address">Адрес:</label>
+                <input type="text" id="address" name="address"><br>
+                <label for="cost">Стоимость услуг:</label>
+                <input type="text" id="cost" name="cost"><br>
+                <label for="signature">Подпись заказчика:</label>
+                <input type="text" id="signature" name="signature"><br>
+                <button type="button" id="generateBtn">Генерировать договор</button>
+            </form>
+        </div>
+        <div id="status"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.21/mammoth.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.1/dist/pizzip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.37.7/build/docxtemplater.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
