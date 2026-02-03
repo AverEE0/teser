@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Извлечение текста из документа</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Извлечение текста из документа</h1>
+        <div class="file-input">
+            <label for="document">Загрузите документ (DOCX):</label>
+            <input type="file" id="document" accept=".docx">
+        </div>
+        <button id="extractBtn">Извлечь текст</button>
+        <div id="result" class="hidden">
+            <h2>Извлеченный текст</h2>
+            <textarea id="textOutput" rows="20" cols="80" readonly></textarea>
+        </div>
+        <div id="status"></div>
+        <a href="index.html">Вернуться к заполнению договора</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.21/mammoth.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.1/dist/pizzip.min.js"></script>
+    <script src="extract.js"></script>
+</body>
+</html>
