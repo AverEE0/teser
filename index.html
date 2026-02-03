@@ -18,6 +18,10 @@
                 <label for="source">Источник данных (фото или DOCX):</label>
                 <input type="file" id="source" accept=".jpg,.jpeg,.png,.docx">
             </div>
+        <button id="extractTextBtn">Извлечь текст из источника</button>
+        <div id="extractedText" class="hidden">
+            <h2>Извлеченный текст</h2>
+            <textarea id="textArea" rows="10" cols="50" readonly></textarea>
         </div>
         <button id="processBtn">Обработать и заполнить</button>
         <div id="extractedData" class="hidden">

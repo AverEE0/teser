@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let templateFile = null;
     let sourceFile = null;
     let extractedData = {};
+    let extractedText = '';
 
     templateInput.addEventListener('change', (e) => {
         templateFile = e.target.files[0];
@@ -19,17 +20,39 @@ document.addEventListener('DOMContentLoaded', () => {
         sourceFile = e.target.files[0];
     });
 
+    extractTextBtn.addEventListener('click', async () => {
+        if (!sourceFile) {
+            showStatus('Пожалуйста, загрузите источник данных.', 'error');
+            return;
+        }
+
+        showStatus('Извлечение текста...', 'info');
+
+        try {
+            extractedText = await extractTextFromSource(sourceFile);
+            document.getElementById('textArea').value = extractedText;
+            document.getElementById('extractedText').classList.remove('hidden');
+            showStatus('Текст извлечен.', 'success');
+        } catch (error) {
+            showStatus('Ошибка извлечения: ' + error.message, 'error');
+        }
+    });
+
     processBtn.addEventListener('click', async () => {
         if (!templateFile || !sourceFile) {
             showStatus('Пожалуйста, загрузите оба файла.', 'error');
             return;
         }
 
+        if (!extractedText) {
+            showStatus('Сначала извлеките текст.', 'error');
+            return;
+        }
+
         showStatus('Обработка...', 'info');
 
         try {
-            const text = await extractTextFromSource(sourceFile);
-            extractedData = parseData(text);
+            extractedData = parseData(extractedText);
             populateForm(extractedData);
             extractedDataDiv.classList.remove('hidden');
             showStatus('Данные извлечены. Проверьте и скорректируйте при необходимости.', 'success');
